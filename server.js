@@ -1,14 +1,15 @@
-const http = require('http');
-const io = require('socket.io');
-
-const apiServer = require('./api');
-const httpServer = http.createServer(apiServer);
-const socketServer = io(httpServer);
-
-const sockets = require('./sockets');
+// server.js
+const http = require("node:http");
+const api = require("./api");
+const setupSocket = require("./socket");
 
 const PORT = 3000;
-httpServer.listen(PORT);
-console.log(`Listening on port ${PORT}...`);
+const HOST = "172.21.243.88";
 
-sockets.listen(socketServer);
+const server = http.createServer(api);
+
+setupSocket(server);
+
+server.listen(PORT, HOST, () => {
+  console.log(`Server is running at http://${HOST}:${PORT}`);
+});
